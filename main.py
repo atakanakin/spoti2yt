@@ -1,6 +1,26 @@
-def main():
-    print("Hello from spoti2yt!")
+import argparse
+from utils.spotify import get_track_info
+from utils.youtube import download_song
+
+
+def main(playlist_url):
+    print("Getting playlist details...")
+    songs = get_track_info(playlist_url, debug=False)
+    # print("Youtube download starting...")
+    # for s in songs:
+    #     title = s["title"]
+    #     artist = s["artist"]
+    #     download_song(title, artist)
+
+    # print("Download complete.")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Convert Spotify playlist to YouTube downloads"
+    )
+    parser.add_argument(
+        "--url", required=True, help="The Spotify playlist URL to convert"
+    )
+    args = parser.parse_args()
+    main(args.url)
