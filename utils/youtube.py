@@ -1,9 +1,21 @@
+import glob
 import os
 import re
 import subprocess
 
-OUT_DIR = "audio"
+# for termux use /storage/emulated/0/storage/downloads/spoti2yt
+OUT_DIR = os.path.join(os.path.expanduser("~"), "storage", "downloads", "spoti2yt")
 os.makedirs(OUT_DIR, exist_ok=True)
+mp3_files = glob.glob(os.path.join(OUT_DIR, "*.mp3"))
+
+if not mp3_files:
+    pass
+
+for f in mp3_files:
+    try:
+        os.remove(f)
+    except OSError as e:
+        pass
 
 
 def slugify(text: str) -> str:
