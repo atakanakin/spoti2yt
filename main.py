@@ -5,14 +5,15 @@ from utils.youtube import download_song
 
 def main(playlist_url):
     print("Getting playlist details...")
-    songs = get_track_info(playlist_url, debug=False)
-    # print("Youtube download starting...")
-    # for s in songs:
-    #     title = s["title"]
-    #     artist = s["artist"]
-    #     download_song(title, artist)
+    songs = get_track_info(playlist_url)
+    print(f"Found {len(songs)} songs in the playlist.")
+    print("Youtube download starting...")
+    for s in songs:
+        title = s["title"]
+        artist = s["artist"]
+        download_song(title, artist)
 
-    # print("Download complete.")
+    print("Download complete.")
 
 
 if __name__ == "__main__":

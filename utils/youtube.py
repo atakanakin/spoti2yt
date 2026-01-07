@@ -34,6 +34,7 @@ def slugify(text: str) -> str:
 
 
 def download_song(title: str, artist: str):
+    print(f"Downloading: {title} - {artist}")
     safe_title = slugify(title)
     safe_artist = slugify(artist)
 
@@ -56,4 +57,4 @@ def download_song(title: str, artist: str):
         out_path,
     ]
 
-    subprocess.run(cmd, check=False, shell=True)
+    subprocess.run(cmd, check=False)
