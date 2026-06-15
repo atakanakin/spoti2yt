@@ -8,10 +8,10 @@ def main(playlist_url):
     songs = get_track_info(playlist_url)
     print(f"Found {len(songs)} songs in the playlist.")
     print("Youtube download starting...")
-    for s in songs:
+    for index, s in enumerate(songs, start=1):
         title = s["title"]
         artist = s["artist"]
-        download_song(title, artist)
+        download_song(title, artist, sequence=index)
 
     print("Download complete.")
 

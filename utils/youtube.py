@@ -45,12 +45,12 @@ def slugify(text: str) -> str:
     return text[:120]
 
 
-def download_song(title: str, artist: str):
+def download_song(title: str, artist: str, sequence: int = 0):
     print(f"Downloading: {title} - {artist}")
     safe_title = slugify(title)
     safe_artist = slugify(artist)
 
-    out_name = f"{safe_title} - {safe_artist}.mp3"
+    out_name = f"{sequence:02d} {safe_title} - {safe_artist}.mp3"
     out_path = os.path.join(OUT_DIR, out_name)
 
     query = f"{title} - {artist}"
