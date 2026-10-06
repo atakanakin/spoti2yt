@@ -46,20 +46,25 @@ Files are saved to `~/storage/downloads/spoti2yt` (see `OUT_DIR` in
 `utils/youtube.py`). Existing `.mp3` files in that folder are deleted at the
 start of each run.
 
-#### Shell alias (Termux)
+#### Shell function (Termux)
 
-Add an alias to `~/.zshrc` (use `~/.bashrc` if you use bash) so a single
+Add a small function to `~/.bashrc` (or `~/.zshrc` if you use zsh) so a single
 command does everything:
 
 ```bash
-echo 'alias s='"'"'uv run --project ~/spoti2yt ~/spoti2yt/main.py --url'"'"'' >> ~/.zshrc
-source ~/.zshrc
+s() {
+    if [ -z "$1" ]; then
+        echo "Error: no link given. Usage: s <spotify-link>"
+        return 1
+    fi
+    (cd ~/spoti2yt && uv run main.py --url "$1")
+}
 ```
 
-This appends the following line:
+Reload your shell config:
 
 ```bash
-alias s='uv run --project ~/spoti2yt ~/spoti2yt/main.py --url'
+source ~/.bashrc
 ```
 
 Now paste a link in Termux:
