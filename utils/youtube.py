@@ -2,6 +2,7 @@ import glob
 import os
 import re
 import subprocess
+import sys
 
 # for termux use /storage/emulated/0/storage/downloads/spoti2yt
 OUT_DIR = os.path.join(os.path.expanduser("~"), "storage", "downloads", "spoti2yt")
@@ -56,7 +57,9 @@ def download_song(title: str, artist: str, sequence: int = 0):
     query = f"{title} - {artist}"
 
     cmd = [
-        "yt-dlp",
+        sys.executable,
+        "-m",
+        "yt_dlp",
         f"ytsearch1:{query}",
         "-x",
         "--audio-format",

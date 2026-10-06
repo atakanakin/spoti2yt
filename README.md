@@ -1,51 +1,84 @@
 # spoti2yt
 
-A tool to convert Spotify playlists to YouTube audio downloads.
+Download a Spotify playlist as MP3 files by searching each track on YouTube.
+Dependencies and the Python environment are managed with [uv](https://docs.astral.sh/uv/).
 
-## Installation
+On every run the tool first upgrades `yt-dlp` to the latest release, so
+downloads don't break when YouTube changes something.
 
-1. Install `uv`:
+## Setup
 
-   ```bash
-   curl -LsSf https://astral.sh/uv/install.sh | sh
-   ```
+### 1. Spotify credentials
 
-2. Clone or download this repository.
-
-3. Install dependencies:
-   ```bash
-   uv sync
-   ```
-
-## Usage
-
-Run the script with a Spotify playlist URL:
-
-```bash
-uv run main.py --playlist-url "https://open.spotify.com/playlist/YOUR_PLAYLIST_ID"
-```
-
-This will scrape the playlist and download each song as MP3 to the `audio/` directory.
-
-## Environment Variables
-
-1. Create a Spotify app at [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
-
-2. Copy `example.env` to `.env`:
+1. Create an app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+2. Copy `example.env` to `.env` and fill it in:
 
    ```bash
    cp example.env .env
    ```
 
-3. Edit `.env` with your credentials:
+   ```
+   SPOTIPY_CLIENT_ID="your_client_id"
+   SPOTIPY_CLIENT_SECRET="your_client_secret"
+   ```
 
-   ```
-   SPOTIPY_CLIENT_ID=your_client_id
-   SPOTIPY_CLIENT_SECRET=your_client_secret
-   ```
+### 2. Install on desktop (macOS / Linux)
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+git clone <repo-url> spoti2yt && cd spoti2yt
+uv sync
+```
+
+### 3. Install on Android (Termux)
+
+```bash
+pkg update && pkg upgrade
+pkg install git uv ffmpeg
+termux-setup-storage          # grants access to ~/storage/downloads
+
+git clone <repo-url> ~/spoti2yt && cd ~/spoti2yt
+cp example.env .env           # then edit .env with your credentials
+uv sync
+```
+
+Files are saved to `~/storage/downloads/spoti2yt` (see `OUT_DIR` in
+`utils/youtube.py`). Existing `.mp3` files in that folder are deleted at the
+start of each run.
+
+#### Shell alias (Termux)
+
+Add an alias to `~/.zshrc` (use `~/.bashrc` if you use bash) so a single
+command does everything:
+
+```bash
+echo 'alias s='"'"'uv run --project ~/spoti2yt ~/spoti2yt/main.py --url'"'"'' >> ~/.zshrc
+source ~/.zshrc
+```
+
+This appends the following line:
+
+```bash
+alias s='uv run --project ~/spoti2yt ~/spoti2yt/main.py --url'
+```
+
+Now paste a link in Termux:
+
+```bash
+s "https://open.spotify.com/playlist/YOUR_PLAYLIST_ID"
+```
+
+## Usage
+
+```bash
+uv run main.py --url "https://open.spotify.com/playlist/YOUR_PLAYLIST_ID"
+```
+
+Each song is downloaded as `NN title - artist.mp3`, where `NN` is its position
+in the playlist.
 
 ## Requirements
 
-- Python 3.14+
-- yt-dlp (installed via dependencies)
-- Spotify developer account
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/)
+- [ffmpeg](https://ffmpeg.org/) (for audio extraction)

@@ -1,9 +1,11 @@
 import argparse
 from utils.spotify import get_track_info
+from utils.updater import update_yt_dlp
 from utils.youtube import download_song
 
 
 def main(playlist_url):
+    update_yt_dlp()
     print("Getting playlist details...")
     songs = get_track_info(playlist_url)
     print(f"Found {len(songs)} songs in the playlist.")
